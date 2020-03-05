@@ -7,8 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.shell.Shell;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
 import io.qameta.allure.Step;
 
 @Slf4j
@@ -23,14 +22,37 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
     @Autowired
     Shell shell;
 
-    @Step("User opens shell")
-    @BeforeMethod
-    void openShell() {
-        log.debug("Shell ready for work");
+    @BeforeSuite
+    void beforeSuiteActions(){
+        //Generate test data
     }
 
-    @AfterMethod()
+    @BeforeTest
+    void beforeTestActions(){
+        //Generate XML before test run
+    }
+
+
+    @BeforeMethod
+    void beforeMethodAction(){
+        //Check that shell is available
+        //Log availability
+    }
+
+    @AfterMethod
     void closeShell() {
+        //imitate shell close
         log.debug("Shell closed");
     }
+
+    @AfterTest
+    void afterClassActions(){
+        //attach report
+    }
+
+    @AfterSuite
+    void afterSuiteActions(){
+        //Delete file
+    }
+
 }

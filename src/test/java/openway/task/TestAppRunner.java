@@ -1,6 +1,7 @@
 package openway.task;
 
 import lombok.extern.slf4j.Slf4j;
+import openway.task.utils.Utils;
 import org.jline.reader.ParsedLine;
 import org.jline.reader.Parser;
 import org.jline.reader.SyntaxError;
@@ -24,6 +25,11 @@ public class TestAppRunner implements ApplicationRunner {
     @Bean
     public Parser parser() {
         return (var1, var2, var3) -> null;
+    }
+
+    @Bean
+    public Utils getUtils(){
+        return new Utils();
     }
 
 }

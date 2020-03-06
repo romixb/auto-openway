@@ -1,6 +1,7 @@
 package openway.task;
 
 import lombok.extern.slf4j.Slf4j;
+import openway.task.utils.DataGenerators;
 import openway.task.utils.Utils;
 import org.jline.reader.ParsedLine;
 import org.jline.reader.Parser;
@@ -28,8 +29,8 @@ public class TestAppRunner implements ApplicationRunner {
     }
 
     @Bean
-    public Utils getUtils(){
-        return new Utils();
+    public DataGenerators getDataGenerator(){
+        return new DataGenerators();
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.shell.standard.ShellMethod;
 public class FunctionRunner {
 
     @ShellMethod(value = "Calculate result of f(x)=1/x", group = "Function runner")
-    public int execute(int x) {
+    public double execute(double x) {
         return  1/x;
     }
 

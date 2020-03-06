@@ -1,14 +1,21 @@
 package openway.task;
 
+import io.qameta.allure.Attachment;
 import lombok.extern.slf4j.Slf4j;
+import openway.task.utils.DataGenerators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.shell.Shell;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.SkipException;
 import org.testng.annotations.*;
-import io.qameta.allure.Step;
+
+import java.io.IOException;
+
+import static openway.task.utils.Utils.deleteTestDataSetToXml;
+import static openway.task.utils.Utils.testDataSetToXmlAndAttach;
 
 @Slf4j
 @SpringBootTest
@@ -22,21 +29,23 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
     @Autowired
     Shell shell;
 
+
     @BeforeSuite
     void beforeSuiteActions(){
-        //Generate test data
-    }
 
-    @BeforeTest
-    void beforeTestActions(){
-        //Generate XML before test run
+        DataGenerators dataGenerators = new DataGenerators();
+
+        log.debug("Start DataFillUp");
+        dataGenerators.fillUpCurrentTestDataContainer();
+        log.debug("TestData list filled up with " + DataGenerators.testDataList.size() + " TestDataObjects");
     }
 
 
     @BeforeMethod
     void beforeMethodAction(){
-        //Check that shell is available
-        //Log availability
+        if (shell==null){
+            throw new SkipException("Shell init failed");
+        }
     }
 
     @AfterMethod
@@ -46,13 +55,14 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
     }
 
     @AfterTest
-    void afterClassActions(){
-        //attach report
+    void afterClassActions() throws IOException {
+        testDataSetToXmlAndAttach();
+
     }
 
     @AfterSuite
     void afterSuiteActions(){
-        //Delete file
+        deleteTestDataSetToXml();
     }
 
 }

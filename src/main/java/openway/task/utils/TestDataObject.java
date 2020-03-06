@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 @Builder
-public class TestDataObject <T>{
+public class TestDataObject <T, R>{
 
     String description;
 
     T testValue;
 
-    T expectedValue;
+    R expectedValue;
 
 }

@@ -25,7 +25,7 @@ public class Tests extends BasicTest {
 
     @Test(description = "Test integer input", groups = {"smoke", "positive"})
     public void integerTypeTest(){
-        Assert.assertEquals(shell.evaluate(()-> "execute " + 5), (double)1/5);
+        Assert.assertEquals(shell.evaluate(()-> "execute " + 5), 1/5.0);
     }
 
     @Test(description = "Test double input",groups = {"smoke", "positive"})

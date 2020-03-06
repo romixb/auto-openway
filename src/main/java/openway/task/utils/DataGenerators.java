@@ -2,11 +2,12 @@ package openway.task.utils;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionFailedException;
+import org.springframework.core.convert.TypeDescriptor;
 
 import java.lang.invoke.MethodHandles;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -36,27 +37,29 @@ public class DataGenerators {
         return RANDOM.nextDouble();
     }
 
-    public TestDataObject<String> stringCreator(){
+    public TestDataObject<String, ConversionFailedException> stringCreator(){
         String value = generateRandomString();
-        return new TestDataObject.TestDataObjectBuilder<String>()
+        return new TestDataObject.TestDataObjectBuilder<String, ConversionFailedException>()
                 .description("Random string")
                 .testValue(value)
-                .expectedValue("NumberFormatException exception")
+                .expectedValue(new ConversionFailedException(TypeDescriptor.valueOf(String.class),
+                        TypeDescriptor.valueOf(double.class),value,
+                        new NumberFormatException("For input string: \"" + value + "\"")))
                 .build();
     }
 
-    public TestDataObject<Integer> integerCreator(){
+    public TestDataObject<Integer, Double> integerCreator(){
         Integer value = generateRandomInteger();
-        return new TestDataObject.TestDataObjectBuilder<Integer>()
+        return new TestDataObject.TestDataObjectBuilder<Integer, Double>()
                 .description("Random Integer")
                 .testValue(value)
-                .expectedValue(1/value)
+                .expectedValue(1/(double)value)
                 .build();
     }
 
-    public TestDataObject<Double> doubleCreator(){
+    public TestDataObject<Double, Double> doubleCreator(){
         Double value = generateRandomDouble();
-        return new TestDataObject.TestDataObjectBuilder<Double>()
+        return new TestDataObject.TestDataObjectBuilder<Double , Double>()
                 .description("Random string")
                 .testValue(value)
                 .expectedValue(1/value)
@@ -65,9 +68,12 @@ public class DataGenerators {
 
 
     public void fillUpCurrentTestDataContainer() {
-        testDataList.addAll(Collections.nCopies(testDataSetSize, stringCreator()));
-        testDataList.addAll(Collections.nCopies(testDataSetSize, integerCreator()));
-        testDataList.addAll(Collections.nCopies(testDataSetSize, doubleCreator()));
+
+        for (int i = 0; i < testDataSetSize; i++) {
+            testDataList.add(stringCreator());
+            testDataList.add(integerCreator());
+            testDataList.add(doubleCreator());
+        }
 
         log.debug("Generating data in " + MethodHandles.lookup().lookupClass().getSimpleName());
     }

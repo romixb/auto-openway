@@ -29,6 +29,5 @@ public class Utils {
 
     public static void deleteTestDataSetToXml() {
         File file = new File("simple_bean.xml");
-        file.delete();
     }
 }

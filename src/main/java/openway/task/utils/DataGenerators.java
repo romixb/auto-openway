@@ -2,6 +2,7 @@ package openway.task.utils;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 
@@ -39,13 +40,14 @@ public class DataGenerators {
 
     public TestDataObject<String, ConversionFailedException> stringCreator(){
         String value = generateRandomString();
+
         return new TestDataObject.TestDataObjectBuilder<String, ConversionFailedException>()
                 .description("Random string")
                 .testValue(value)
                 .expectedValue(new ConversionFailedException(TypeDescriptor.valueOf(String.class),
-                        TypeDescriptor.valueOf(double.class),value,
-                        new NumberFormatException("For input string: \"" + value + "\"")))
+                        TypeDescriptor.valueOf(double.class), value, new NumberFormatException("For input string: \"" + value + "\"")))
                 .build();
+
     }
 
     public TestDataObject<Integer, Double> integerCreator(){
@@ -70,7 +72,7 @@ public class DataGenerators {
     public void fillUpCurrentTestDataContainer() {
 
         for (int i = 0; i < testDataSetSize; i++) {
-            testDataList.add(stringCreator());
+
             testDataList.add(integerCreator());
             testDataList.add(doubleCreator());
         }

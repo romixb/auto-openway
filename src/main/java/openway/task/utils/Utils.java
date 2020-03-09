@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Objects;
 
@@ -20,14 +21,13 @@ public class Utils {
     @Attachment(value = "Generated data", type = "xml/xslt")
     public static byte[] testDataSetToXmlAndAttach() throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
-        xmlMapper.writeValue(new File("test_dataset.xml"), testDataList);
+        File file = new File("test_dataset.xml");
+        xmlMapper.writeValue(file, testDataList);
 
-        File file = new File(Objects.requireNonNull(Utils.class.getClassLoader()
-                .getResource("test_dataset.xml")).getFile());
         return Files.readAllBytes(file.toPath());
     }
 
-    public static void deleteTestDataSetToXml() {
-        File file = new File("simple_bean.xml");
+    public static void deleteTestDataSetToXml() throws IOException {
+        Files.deleteIfExists(Paths.get("test_dataset.xml"));
     }
 }

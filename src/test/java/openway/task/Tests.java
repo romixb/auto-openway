@@ -15,15 +15,16 @@ import java.util.Map;
 public class Tests extends BasicTest {
 
 
-    @Test(description = "Shell check. Command and command group are present in shell", groups = {"smoke", "positive"})
+    @Test(description = "Shell check. Command and command group are present in shell",
+            groups = {"smoke", "positive"},
+            priority = 0)
     public void smokeTest() {
-
         Map<String, MethodTarget> commands = shell.listCommands();
         MethodTarget commandTarget = commands.get("execute");
         Assert.assertEquals(commandTarget.getGroup(), "Function runner");
     }
 
-    @Test(description = "Test integer input", groups = {"smoke", "positive"})
+    @Test(description = "Test integer input", groups = {"smoke", "positive"}, priority = 5)
     public void integerTypeTest(){
         Assert.assertEquals(shell.evaluate(()-> "execute " + 5), 1/5.0);
     }
@@ -33,10 +34,17 @@ public class Tests extends BasicTest {
         Assert.assertEquals(shell.evaluate(()-> "execute " + 0.1), 1/0.1);
     }
 
-    @Test(dataProviderClass = DataProviders.class, dataProvider = "stringDataProvider", groups = {"extended", "negative"})
-    public void stringTypeTest(String value){
+    @Test(
+            //dataProviderClass = DataProviders.class, dataProvider = "stringDataProvider",
+            groups = {"extended", "negative"}
+            )
+    public void stringTypeTest(){
+        Map<String, MethodTarget> commands = shell.listCommands();
+        MethodTarget methodTarget = commands.get("execute");
 
-           Assert.assertThrows(NumberFormatException.class, () -> shell.evaluate(()-> "execute " + value));
+        invoke(methodTarget, "1.2");
+
+
     }
 
     @Test(dataProviderClass = DataProviders.class, dataProvider = "fuzzDataProvider", groups = {"extended", "negative"})

@@ -3,11 +3,9 @@ package openway.task.utils;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Builder
-public class TestDataObject <T, R>{
+public class TestDataObject<T, R> {
 
     String description;
 

@@ -7,9 +7,6 @@ import static openway.task.utils.DataGenerators.testDataList;
 
 public class DataProviders {
 
-
-    DataGenerators dataGenerators = new DataGenerators();
-
     @DataProvider(name = "fuzzDataProvider")
     public static Object[][] fuzzDataProvider() {
         Object[][] currentArray = new Object[testDataList.size()][3];
@@ -24,10 +21,11 @@ public class DataProviders {
         return currentArray;
     }
 
-    @DataProvider(name = "stringDataProvider")
-    public Object[][] getData(){
+    @DataProvider(name = "expressionStringDataProvider")
+    public Object[][] getData() {
         return new Object[][]{
-                {dataGenerators.generateRandomString()},
+                //{dataGenerators.generateRandomString()},
+                {"9 * 0"},
                 {"9 * 9"},
                 {"2 / 3"}
         };

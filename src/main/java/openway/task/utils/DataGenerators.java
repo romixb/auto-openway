@@ -2,7 +2,6 @@ package openway.task.utils;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.TypeDescriptor;
 
@@ -38,7 +37,7 @@ public class DataGenerators {
         return RANDOM.nextDouble();
     }
 
-    public TestDataObject<String, ConversionFailedException> stringCreator(){
+    public TestDataObject<String, ConversionFailedException> stringCreator() {
         String value = generateRandomString();
 
         return new TestDataObject.TestDataObjectBuilder<String, ConversionFailedException>()
@@ -50,24 +49,23 @@ public class DataGenerators {
 
     }
 
-    public TestDataObject<Integer, Double> integerCreator(){
+    public TestDataObject<Integer, Double> integerCreator() {
         Integer value = generateRandomInteger();
         return new TestDataObject.TestDataObjectBuilder<Integer, Double>()
                 .description("Random Integer")
                 .testValue(value)
-                .expectedValue(1/(double)value)
+                .expectedValue(1 / (double) value)
                 .build();
     }
 
-    public TestDataObject<Double, Double> doubleCreator(){
+    public TestDataObject<Double, Double> doubleCreator() {
         Double value = generateRandomDouble();
-        return new TestDataObject.TestDataObjectBuilder<Double , Double>()
-                .description("Random string")
+        return new TestDataObject.TestDataObjectBuilder<Double, Double>()
+                .description("Random double")
                 .testValue(value)
-                .expectedValue(1/value)
+                .expectedValue(1 / value)
                 .build();
     }
-
 
     public void fillUpCurrentTestDataContainer() {
 

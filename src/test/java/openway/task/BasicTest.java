@@ -13,6 +13,7 @@ import org.testng.SkipException;
 import org.testng.annotations.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 import static openway.task.utils.Utils.deleteTestDataSetToXml;
 import static openway.task.utils.Utils.testDataSetToXmlAndAttach;
@@ -29,12 +30,12 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
     @Autowired
     Shell shell;
 
+    DataGenerators dataGenerators = new DataGenerators();
+
     @BeforeSuite
-    void beforeSuiteActions(){
-
-        DataGenerators dataGenerators = new DataGenerators();
-
+    void beforeSuiteActions() {
         log.debug("Start DataFillUp");
+
         dataGenerators.fillUpCurrentTestDataContainer();
         log.debug("TestData list filled up with " + DataGenerators.testDataList.size() + " TestDataObjects");
 
@@ -42,8 +43,8 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
 
 
     @BeforeMethod
-    void beforeMethodAction(){
-        if (shell==null){
+    void beforeMethodAction() {
+        if (shell == null) {
             throw new SkipException("Shell init failed");
         }
     }
@@ -64,8 +65,13 @@ public class BasicTest extends AbstractTestNGSpringContextTests {
         deleteTestDataSetToXml();
     }
 
-    protected <T> T invoke(final MethodTarget methodTarget, Object... args) {
-        return (T) invokeMethod(methodTarget.getMethod(), methodTarget.getBean(), args);
+    protected <T> void invoke(MethodTarget methodTarget, Object... args) {
+        invokeMethod(methodTarget.getMethod(), methodTarget.getBean(), args);
+    }
+
+    protected MethodTarget receiveMethodTarget(String shellCommand) {
+        Map<String, MethodTarget> commands = shell.listCommands();
+        return commands.get(shellCommand);
     }
 
 }
